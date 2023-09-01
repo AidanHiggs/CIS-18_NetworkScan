@@ -79,12 +79,12 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 
-.vscodium/*
-!.vscodium/settings.json
-!.vscodium/tasks.json
-!.vscodium/launch.json
-!.vscodium/extensions.json
-!.vscodium/*.code-snippets
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
 
 # Local History for Visual Studio Code
 .history/
