@@ -1,7 +1,0 @@
-{
-  "name": "networkScanIonic",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "vue-vite"
-}

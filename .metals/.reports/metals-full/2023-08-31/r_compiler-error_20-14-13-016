@@ -1,0 +1,51 @@
+java.util.NoSuchElementException: next on empty iterator
+occurred in the presentation compiler.
+
+action parameters:
+offset: 690
+uri: file://<HOME>/Desktop/fall%202023/CIS-18_NetworkScan/networkScanner/src/main/java/com/networkscan/cis18/portScanner.java
+text:
+package networkScanner.src.main.java.com.networkscan.cis18;
+import java.io.*;
+import java.net.*; 
+import java.util.Scanner;
+import org.apache.commons.net.util.*;
+
+public class portScanner {
+
+    public static void main(String[] args) {
+        portScanner scanner = new portScanner();
+        String ip = scanner.getIp();
+        scanner.pingEr(ip);
+    }
+
+    public String getIp() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter Ip address");
+        String ipAddr = input.nextLine();
+        input.close();
+        return ipAddr;
+    }
+    public String pingIp(String ipAddr) {
+        PingCommand pingCommand = new PingCommand("ICMP");
+        pingCo@@mmand.setHost(ipAddr);
+        return pingCommand.execute() == 0;
+    }
+    public void pingEr(String ipAddr) { 
+        
+    } 
+}
+
+
+
+error stacktrace:
+scala.collection.Iterator$$anon$19.next(Iterator.scala:973)
+	scala.collection.Iterator$$anon$19.next(Iterator.scala:971)
+	scala.collection.mutable.MutationTracker$CheckedIterator.next(MutationTracker.scala:76)
+	scala.collection.IterableOps.head(Iterable.scala:222)
+	scala.collection.IterableOps.head$(Iterable.scala:222)
+	scala.collection.AbstractIterable.head(Iterable.scala:933)
+	dotty.tools.dotc.interactive.InteractiveDriver.run(InteractiveDriver.scala:168)
+	scala.meta.internal.pc.MetalsDriver.run(MetalsDriver.scala:45)
+	scala.meta.internal.pc.HoverProvider$.hover(HoverProvider.scala:34)
+	scala.meta.internal.pc.ScalaPresentationCompiler.hover$$anonfun$1(ScalaPresentationCompiler.scala:325)
