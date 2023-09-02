@@ -42,11 +42,11 @@ public static int getEndPort(Scanner input) {
        for (int port = startPort; port <= endPort; port++) {
            try {
                Socket socket = new Socket();
-               socket.connect(new InetSocketAddress(ipAddr, port), 1000); // 1000 milliseconds timeout
+               socket.connect(new InetSocketAddress(ipAddr, port), 1000);
                System.out.println("Port " + port + " is open");
                socket.close();
            } catch (IOException e) {
-               System.out.println("Port " + port + " is closed");
+               
            }
        }
    }
@@ -65,7 +65,7 @@ public static int getEndPort(Scanner input) {
             maxRetries++;
 
         }  
-        System.out.println("Maximim number of failures reached, exitting...");
+        System.out.println("Maximim number of failures reached, exiting...");
         return null;
         }
         return host;
