@@ -1,5 +1,18 @@
 {
     "files.watcherExclude": {
         "**/target": true
-    }
+    },
+    "java.jdt.ls.java.home": "/usr/lib/jvm/java-17-openjdk",
+    "metals.javaHome": "/usr/lib/jvm/java-17-openjdk",
+    "maven.terminal.useJavaHome": true,
+    "java.import.gradle.java.home": "/usr/lib/jvm/java-17-openjdk",
+
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-17",
+            "path": "/usr/lib/jvm/java-17-openjdk",
+            "default": true
+        }
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
