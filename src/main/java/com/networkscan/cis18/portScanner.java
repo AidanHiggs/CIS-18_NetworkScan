@@ -61,7 +61,7 @@ public class portScanner {
                     for (int i = 2; i < parts.length; i++) {
                         service += parts[i] + " ";
                     }
-                    service = service.trim(); // Remove trailing whitespace
+                    service = service.trim(); 
                     portServicesMap.put(key, service);
                 }
             }
@@ -143,7 +143,6 @@ public class portScanner {
    }
 
 
-    // Method to get user inputs for IP or hostname and start/end ports  
 
     // Method to close the input scanner
     public static void closeInput() {
