@@ -9,8 +9,5 @@
         <module name="networkScanner" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="networkScanner" target="1.7" />
-    </bytecodeTargetLevel>
   </component>
 </project>
