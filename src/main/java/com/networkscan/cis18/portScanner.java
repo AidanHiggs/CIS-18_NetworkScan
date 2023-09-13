@@ -1,5 +1,5 @@
 package com.networkscan.cis18;
-
+import com.networkscan.cis18.NetworkScannerGUI;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,12 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 
-public class portScanner {
+public class portScanner extends NetworkScannerGUI{
     static Scanner input = new Scanner(System.in);
     static Map<String, String> portServicesMap = new HashMap<>();
 
@@ -53,10 +54,10 @@ public class portScanner {
 public static void loadPortServices(String filename) {
     try (BufferedReader br = new BufferedReader(new FileReader(filename))) { // Open the file for reading
         String line;
-        while ((line = br.readLine()) != null) { // Read each line from the file
+        while ((line = br.readLine().trim()) != null) { // Read each line from the file
             String[] parts = line.split(" "); // Split the line by spaces
             if (parts.length >= 3) { // Check if there are at least 3 parts
-                String key = parts[0] + "-" + parts[1]; // Create a key by concatenating the first two parts
+                String key = parts[0] + " " + parts[1]; // Create a key by concatenating the first two parts
                 String service = ""; // Initialize an empty string for the service
                 for (int i = 2; i < parts.length; i++) { // Iterate over the remaining parts
                     service += parts[i] + " "; // Concatenate each part with a space
@@ -72,7 +73,7 @@ public static void loadPortServices(String filename) {
     
 
     public static String getService(int port, String protocol) {
-        return portServicesMap.getOrDefault(port + "-" + protocol, "Unknown");
+        return portServicesMap.getOrDefault(port + " " + protocol, "Unknown");
     }
 
 
@@ -95,7 +96,7 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
                     // Specify the protocol (tcp or udp)
                     String protocol = "tcp";
                     // Create a key to identify the service based on the port and protocol
-                    String key = port + "-" + protocol;
+                    String key = port + " " + protocol;
                     // Get the service associated with the port and protocol
                     String service = getService(port, protocol);
                     // If the service is unknown, print a message
@@ -167,4 +168,40 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
         // Close the input scanner
         input.close();
     }
+    static String getInputs() {
+        String host = ipAddressField.getText();
+        int startPort;
+        int endPort;
+        if (scanMethodComboBox.getSelectedItem().equals("Port Scan")) {
+            String startPortInput = JOptionPane.showInputDialog("Enter the start port");
+            String endPortInput = JOptionPane.showInputDialog("Enter the end port");
+    
+            if (startPortInput == null || endPortInput == null) {
+                // User canceled the input, return an empty string
+                return "";
+            }
+    
+            startPort = Integer.parseInt(startPortInput);
+            endPort = Integer.parseInt(endPortInput);
+        } else {
+            startPort = getStartPort(null);
+            endPort = getEndPort(null);;
+        }
+    
+        String scanResult;
+    
+        if (host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
+            // If it's an IP address, directly call the scanIp method
+            scanResult = "Scanning IP: " + host;
+            scanIp(startPort, endPort, host, resultArea);
+            
+        } else {
+            // If it's a hostname, resolve it to an IP address using the resolveHostname method
+            String ipAddr = portScanner.resolveHostname(host, resultArea);
+            scanResult = "Scanning hostname: " + host + " (resolved to IP: " + ipAddr + ")";
+            scanIp(startPort, endPort, ipAddr, resultArea);
+        }
+        return scanResult;
+    }
+    
 }

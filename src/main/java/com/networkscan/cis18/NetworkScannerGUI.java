@@ -9,11 +9,11 @@ import java.util.Scanner;
 
 public class NetworkScannerGUI extends JFrame {
     // Fields
-    private JTextField ipAddressField;
-    private JTextField subnetField;
-    private JTextArea resultArea;
-    private JButton scanButton;
-    private JComboBox<String> scanMethodComboBox;
+    protected static JTextField ipAddressField;
+    protected static JTextField subnetField;
+    protected static JTextArea resultArea;
+    protected static JButton scanButton;
+    protected static JComboBox<String> scanMethodComboBox;
 
     public NetworkScannerGUI() {
         // Set window properties
@@ -55,7 +55,7 @@ public class NetworkScannerGUI extends JFrame {
            scanButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String scanResult = getInputs();
+                String scanResult = portScanner.getInputs();
                 resultArea.append(scanResult);
             }
         });
@@ -65,44 +65,6 @@ public class NetworkScannerGUI extends JFrame {
         // Puts the result above the home screen
         add(new JScrollPane(resultArea), BorderLayout.NORTH);
     }
-    
-    private String getInputs() {
-        String host = ipAddressField.getText();
-        int startPort;
-        int endPort;
-        portScanner scanner = new portScanner(); // Create an instance of portScanner
-        if (scanMethodComboBox.getSelectedItem().equals("Port Scan")) {
-            String startPortInput = JOptionPane.showInputDialog("Enter the start port");
-            String endPortInput = JOptionPane.showInputDialog("Enter the end port");
-    
-            if (startPortInput == null || endPortInput == null) {
-                // User canceled the input, return an empty string
-                return "";
-            }
-    
-            startPort = Integer.parseInt(startPortInput);
-            endPort = Integer.parseInt(endPortInput);
-        } else {
-            startPort = portScanner.getStartPort(null);
-            endPort = portScanner.getEndPort(null);;
-        }
-    
-        String scanResult;
-    
-        if (host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
-            // If it's an IP address, directly call the scanIp method
-            scanResult = "Scanning IP: " + host;
-            portScanner.scanIp(startPort, endPort, host, resultArea);
-            
-        } else {
-            // If it's a hostname, resolve it to an IP address using the resolveHostname method
-            String ipAddr = portScanner.resolveHostname(host, resultArea);
-            scanResult = "Scanning hostname: " + host + " (resolved to IP: " + ipAddr + ")";
-            portScanner.scanIp(startPort, endPort, ipAddr, resultArea);
-        }
-        return scanResult;
-    }
-    
 
     
     
