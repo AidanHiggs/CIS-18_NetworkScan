@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -21,7 +22,7 @@ public class portScanner extends NetworkScannerGUI{
     static Map<String, String> portServicesMap = new HashMap<>();
 
     public static void main(String[] args) {
-        loadPortServices("src/main/java/com/networkscan/cis18/ports2.txt");
+        loadPortServices("src/main/java/com/networkscan/cis18/ports.txt");
     }
 
     // Method to get the IP address from the user
@@ -52,28 +53,31 @@ public class portScanner extends NetworkScannerGUI{
  * @param  filename  the name of the file containing the port services
  */
 public static void loadPortServices(String filename) {
-    try (BufferedReader br = new BufferedReader(new FileReader(filename))) { // Open the file for reading
+    try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
         String line;
-        while ((line = br.readLine().trim()) != null) { // Read each line from the file
-            String[] parts = line.split(" "); // Split the line by spaces
-            if (parts.length >= 3) { // Check if there are at least 3 parts
-                String key = parts[0] + " " + parts[1]; // Create a key by concatenating the first two parts
-                String service = ""; // Initialize an empty string for the service
-                for (int i = 2; i < parts.length; i++) { // Iterate over the remaining parts
-                    service += parts[i] + " "; // Concatenate each part with a space
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split(" ");
+            if (parts.length >= 3) {
+                String[] keyParts = parts[0].split(" ");
+
+                // Join all the parts from index 1 onwards to get the service
+                // Remove leading and trailing spaces from the service
+                String service = String.join(" ", Arrays.copyOfRange(parts, 2, parts.length)).trim();
+
+                if (keyParts.length >= 1) {
+                    String key = keyParts[0];
+                    portServicesMap.put(key, service);
                 }
-                service = service.trim(); // Remove leading and trailing spaces from the service
-                portServicesMap.put(key, service); // Add the key-value pair to the map
             }
         }
-    } catch (IOException e) { // Catch any IOException that occurs during file reading
-        e.printStackTrace(); // Print the stack trace for debugging
+    } catch (IOException e) {
+        e.printStackTrace();
     }
 }
     
 
-    public static String getService(int port, String protocol) {
-        return portServicesMap.getOrDefault(port + " " + protocol, "Unknown");
+    public static String getService(int port) {
+        return portServicesMap.getOrDefault(port,"Unknown");
     }
 
 
@@ -93,12 +97,10 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
                     // Create a socket and connect to the IP address and port
                     Socket socket = new Socket();
                     socket.connect(new InetSocketAddress(ipAddr, port), 5000);
-                    // Specify the protocol (tcp or udp)
-                    String protocol = "tcp";
                     // Create a key to identify the service based on the port and protocol
-                    String key = port + " " + protocol;
+                    int key = port;
                     // Get the service associated with the port and protocol
-                    String service = getService(port, protocol);
+                    String service = getService(port);
                     // If the service is unknown, print a message
                     if (service.equals("Unknown")) {
                         System.out.println("Service not found for key: " + key);
