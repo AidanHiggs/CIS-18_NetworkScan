@@ -1,11 +1,14 @@
 package com.networkscan.cis18;
 import com.networkscan.cis18.NetworkScannerGUI;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,10 +22,16 @@ import javax.swing.SwingWorker;
 
 public class portScanner extends NetworkScannerGUI{
     static Scanner input = new Scanner(System.in);
-    static Map<String, String> portServicesMap = new HashMap<>();
+    static Map<String, Service> portServicesMap = new HashMap<>();
 
     public static void main(String[] args) {
-        loadPortServices("src/main/java/com/networkscan/cis18/ports.txt");
+        //loadPortServices("src/main/java/com/networkscan/cis18/ports.txt");
+        try {
+            loadPortServices(Paths.get(portScanner.class.getResource("ports.txt").toURI()).toFile());
+            scanIp(22,  25, "23.185.0.3", null);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Method to get the IP address from the user
@@ -52,21 +61,18 @@ public class portScanner extends NetworkScannerGUI{
  *
  * @param  filename  the name of the file containing the port services
  */
-public static void loadPortServices(String filename) {
+public static void loadPortServices(File filename) {
+    //System.out.printf("File: %s%n", filename.toString());
     try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
         String line;
         while ((line = br.readLine()) != null) {
             String[] parts = line.split(" ");
             if (parts.length >= 3) {
-                String[] keyParts = parts[0].split(" ");
+                String keyParts = parts[0];
+                Service svc = new Service(parts[1], parts[2]);
 
-                // Join all the parts from index 1 onwards to get the service
-                // Remove leading and trailing spaces from the service
-                String service = String.join(" ", Arrays.copyOfRange(parts, 2, parts.length)).trim();
-
-                if (keyParts.length >= 1) {
-                    String key = keyParts[0];
-                    portServicesMap.put(key, service);
+                if (!keyParts.isEmpty()) {
+                    portServicesMap.put(keyParts, svc);
                 }
             }
         }
@@ -76,8 +82,8 @@ public static void loadPortServices(String filename) {
 }
     
 
-    public static String getService(int port) {
-        return portServicesMap.getOrDefault(port,"Unknown");
+    public static Service getService(int port) {
+        return portServicesMap.getOrDefault(String.valueOf(port),new Service("Unknown", "Unknown"));
     }
 
 
@@ -85,14 +91,17 @@ public static void loadPortServices(String filename) {
     // Method to scan the IP address for open ports
 public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea resultArea) {
     // Create a SwingWorker to perform the scanning task asynchronously
+    System.out.println("I am alive!");
     SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
         // Override the doInBackground method to perform the scanning task
         @Override
         protected String doInBackground() throws Exception {
+            System.out.println("I am alive!");
             // Create a StringBuilder to store the scan results
             StringBuilder sb = new StringBuilder();
             // Iterate through the range of ports to scan
             for (int port = startPort; port <= endPort; port++) {
+                System.out.printf("Port: %d%n", port);
                 try {
                     // Create a socket and connect to the IP address and port
                     Socket socket = new Socket();
@@ -100,17 +109,19 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
                     // Create a key to identify the service based on the port and protocol
                     int key = port;
                     // Get the service associated with the port and protocol
-                    String service = getService(port);
+                    Service service = getService(port);
+                    System.out.println(service.toString());
                     // If the service is unknown, print a message
-                    if (service.equals("Unknown")) {
+                    if (service.getServiceName().equals("Unknown")) {
                         System.out.println("Service not found for key: " + key);
                     }
                     // Append the open port and service to the scan results
-                    sb.append("Port " + port + " is open - " + service + "\n");
+                    sb.append("Port " + port + " is open - " + service.toString() + "\n");
                     // Close the socket
                     socket.close();
                 } catch (IOException e) {
                     // Ignore exceptions for closed ports
+                    System.out.println(e.getMessage());
                 }
             }
             // Return the scan results
@@ -124,7 +135,8 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
                 // Get the scan results from the doInBackground method
                 String scanResult = get();
                 // Update the UI with the scan results using the Event Dispatch Thread
-                SwingUtilities.invokeLater(() -> resultArea.append(scanResult));
+                //SwingUtilities.invokeLater(() -> resultArea.append(scanResult));
+                SwingUtilities.invokeLater(() -> System.out.println(scanResult));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -133,7 +145,8 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
     };
 
     // Execute the SwingWorker to start the scanning task
-    worker.execute();
+    //worker.execute();
+    worker.run();
 }
 
 
