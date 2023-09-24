@@ -25,13 +25,12 @@ public class portScanner extends NetworkScannerGUI{
     static Map<String, Service> portServicesMap = new HashMap<>();
 
     public static void main(String[] args) {
-        //loadPortServices("src/main/java/com/networkscan/cis18/ports.txt");
-        try {
-            loadPortServices(Paths.get(portScanner.class.getResource("ports.txt").toURI()).toFile());
-            scanIp(22,  25, "23.185.0.3", null);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        loadPortServices("src/main/java/com/networkscan/cis18/ports.txt");
+       // try {
+           // loadPortServices(Paths.get(portScanner.class.getResource("ports.txt").toURI()).toFile());
+        //} catch (URISyntaxException e) {
+         //   throw new RuntimeException(e);
+        //}
     }
 
     // Method to get the IP address from the user
@@ -59,10 +58,10 @@ public class portScanner extends NetworkScannerGUI{
 /**
  * Loads port services from a file and populates the portServicesMap.
  *
- * @param  filename  the name of the file containing the port services
+ * @param  string  the name of the file containing the port services
  */
-public static void loadPortServices(File filename) {
-    //System.out.printf("File: %s%n", filename.toString());
+public static void loadPortServices(String filename) {
+    System.out.printf("File: %s%n", filename.toString());
     try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
         String line;
         while ((line = br.readLine()) != null) {
@@ -91,17 +90,14 @@ public static void loadPortServices(File filename) {
     // Method to scan the IP address for open ports
 public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea resultArea) {
     // Create a SwingWorker to perform the scanning task asynchronously
-    System.out.println("I am alive!");
     SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
         // Override the doInBackground method to perform the scanning task
         @Override
         protected String doInBackground() throws Exception {
-            System.out.println("I am alive!");
             // Create a StringBuilder to store the scan results
             StringBuilder sb = new StringBuilder();
             // Iterate through the range of ports to scan
             for (int port = startPort; port <= endPort; port++) {
-                System.out.printf("Port: %d%n", port);
                 try {
                     // Create a socket and connect to the IP address and port
                     Socket socket = new Socket();
@@ -121,7 +117,7 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
                     socket.close();
                 } catch (IOException e) {
                     // Ignore exceptions for closed ports
-                    System.out.println(e.getMessage());
+                    //System.out.println(e.getMessage());
                 }
             }
             // Return the scan results
@@ -135,8 +131,7 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
                 // Get the scan results from the doInBackground method
                 String scanResult = get();
                 // Update the UI with the scan results using the Event Dispatch Thread
-                //SwingUtilities.invokeLater(() -> resultArea.append(scanResult));
-                SwingUtilities.invokeLater(() -> System.out.println(scanResult));
+                SwingUtilities.invokeLater(() -> resultArea.append(scanResult));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -190,7 +185,7 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
         if (scanMethodComboBox.getSelectedItem().equals("Port Scan")) {
             String startPortInput = JOptionPane.showInputDialog("Enter the start port");
             String endPortInput = JOptionPane.showInputDialog("Enter the end port");
-    
+            loadPortServices("src/main/resources/com/networkscan/cis18/ports.txt");
             if (startPortInput == null || endPortInput == null) {
                 // User canceled the input, return an empty string
                 return "";
@@ -207,13 +202,14 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
     
         if (host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
             // If it's an IP address, directly call the scanIp method
-            scanResult = "Scanning IP: " + host;
+            scanResult = "Scanning IP: " + host + "\n";
             scanIp(startPort, endPort, host, resultArea);
             
         } else {
             // If it's a hostname, resolve it to an IP address using the resolveHostname method
             String ipAddr = portScanner.resolveHostname(host, resultArea);
             scanResult = "Scanning hostname: " + host + " (resolved to IP: " + ipAddr + ")";
+            System.out.println(ipAddr);
             scanIp(startPort, endPort, ipAddr, resultArea);
         }
         return scanResult;

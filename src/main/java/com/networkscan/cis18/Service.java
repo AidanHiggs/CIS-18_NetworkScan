@@ -7,7 +7,7 @@ public class Service {
     public Service(String protocol, String serviceName) {
         this.protocol = protocol;
         this.serviceName = serviceName;
-        //System.out.println(this.toString());
+        System.out.println(this.toString());
     }
 
     public String getProtocol() {
@@ -26,11 +26,7 @@ public class Service {
         this.serviceName = serviceName;
     }
 
-    @Override
-    public String toString() {
-        return "Service{" +
-                "protocol='" + protocol + '\'' +
-                ", serviceName='" + serviceName + '\'' +
-                '}';
-    }
-}
+@Override
+public String toString() {
+    return " " + this.serviceName;
+}}

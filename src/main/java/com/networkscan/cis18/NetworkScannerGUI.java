@@ -29,7 +29,7 @@ public class NetworkScannerGUI extends JFrame {
 
         // Label for scan methods and add combo box selections to choose from
         JLabel scanMethodLabel = new JLabel("Select Your Scan Method:");
-        String[] scanMethods = {"Ping", "Ping Sweep", "Port Scan", "Tracert"};
+        String[] scanMethods = {"Ping", "Ping Sweep", "Port Scan", "Tracert, whoIs, ETC."};
         scanMethodComboBox = new JComboBox<>(scanMethods);
         homePanel.add(scanMethodLabel);
         homePanel.add(scanMethodComboBox);
