@@ -106,7 +106,6 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
                     int key = port;
                     // Get the service associated with the port and protocol
                     Service service = getService(port);
-                    System.out.println(service.toString());
                     // If the service is unknown, print a message
                     if (service.getServiceName().equals("Unknown")) {
                         System.out.println("Service not found for key: " + key);
@@ -117,7 +116,6 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
                     socket.close();
                 } catch (IOException e) {
                     // Ignore exceptions for closed ports
-                    //System.out.println(e.getMessage());
                 }
             }
             // Return the scan results
@@ -140,8 +138,8 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
     };
 
     // Execute the SwingWorker to start the scanning task
-    //worker.execute();
-    worker.run();
+    worker.execute();
+    //worker.run();
 }
 
 
@@ -216,3 +214,4 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
     }
     
 }
+

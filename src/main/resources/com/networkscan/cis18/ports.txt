@@ -78,6 +78,7 @@
 78 tcp vettcp
 79 tcp Finger
 80 tcp World
+81 tcp kys
 82 tcp XFER
 83 tcp MIT
 84 tcp Common
