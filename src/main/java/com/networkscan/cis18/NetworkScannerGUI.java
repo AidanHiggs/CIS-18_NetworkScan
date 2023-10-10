@@ -1,4 +1,7 @@
+//This is the NetworkScnnerGUI.java class
 package com.networkscan.cis18;
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -93,4 +96,5 @@ public class NetworkScannerGUI extends JFrame {
             System.out.println(host);
         }
     }
+
 }

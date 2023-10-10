@@ -1,6 +1,7 @@
 package com.networkscan.cis18;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -15,6 +16,8 @@ import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 import org.pcap4j.packet.UnknownPacket;
 import org.pcap4j.packet.namednumber.TcpPort;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 public class osDetectionDecorator {
     public static PcapHandle networkInt = null;
@@ -174,5 +177,5 @@ private static boolean canReachInternet(String networkInterface) {
     
     return false; // Placeholder return value; modify as needed
 }
-   
+
 }
