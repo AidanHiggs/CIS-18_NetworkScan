@@ -1,5 +1,6 @@
 //This is the NetworkScnnerGUI.java class
-package com.networkscan.cis18; 
+package com.networkscan.cis18;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,7 +65,7 @@ public class NetworkScannerGUI extends JFrame {
                 hostUpdater.start();
             }
         });
-        
+
         Action enterAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,15 +81,5 @@ public class NetworkScannerGUI extends JFrame {
         add(new JScrollPane(resultArea), BorderLayout.NORTH);
     }
 
-    
-    
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                NetworkScannerGUI scanner = new NetworkScannerGUI();
-                scanner.setVisible(true);
-            }
-        });
-    }
 }
