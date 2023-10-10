@@ -5,7 +5,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
+import java.io.BufferedReader;   
+import java.awt.event.KeyEvent;
+import java.io.File;           ;
 
 public class NetworkScannerGUI extends JFrame {
     // Fields
@@ -52,13 +54,23 @@ public class NetworkScannerGUI extends JFrame {
         resultArea.setEditable(false);
         homePanel.add(scanButton);
 
-           scanButton.addActionListener(new ActionListener() {
+        scanButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                resultArea.setText("");
                 String scanResult = portScanner.getInputs();
                 resultArea.append(scanResult);
             }
         });
+        
+        Action enterAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                scanButton.doClick();
+            }
+        };
+        scanButton.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
+        scanButton.getActionMap().put("Enter", enterAction);
 
         // Makes the home screen appear in the middle of the screen instead of bottom right
         add(homePanel, BorderLayout.CENTER);

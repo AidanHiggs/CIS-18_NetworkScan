@@ -33,13 +33,11 @@ public class portScanner extends NetworkScannerGUI{
         //}
     }
 
-    // Method to get the IP address from the user
-    public static String getIpAddress() {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Enter IP address");
-        String ipAddr = input.nextLine();
-        return ipAddr;
-    }
+// Method to get the IP address from the user
+public static String getIpAddress() {
+    String ipAddr = new hostImpl().getIpAddress();
+    return ipAddr;
+}
 
     // Method to get the start port from the user
     public static int getStartPort(Scanner input) {
@@ -88,86 +86,101 @@ public static void loadPortServices(String filename) {
 
     // Method to scan the IP address for open ports
     // Method to scan the IP address for open ports
-public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea resultArea) {
-    // Create a SwingWorker to perform the scanning task asynchronously
-    SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
-        // Override the doInBackground method to perform the scanning task
-        @Override
-        protected String doInBackground() throws Exception {
-            // Create a StringBuilder to store the scan results
-            StringBuilder sb = new StringBuilder();
-            // Iterate through the range of ports to scan
-            for (int port = startPort; port <= endPort; port++) {
-                try {
-                    // Create a socket and connect to the IP address and port
-                    Socket socket = new Socket();
-                    socket.connect(new InetSocketAddress(ipAddr, port), 5000);
-                    // Create a key to identify the service based on the port and protocol
-                    int key = port;
-                    // Get the service associated with the port and protocol
-                    Service service = getService(port);
-                    // If the service is unknown, print a message
-                    if (service.getServiceName().equals("Unknown")) {
-                        System.out.println("Service not found for key: " + key);
+    public static void scanIp(int startPort, int endPort, String host, JTextArea resultArea) {
+        // Create a SwingWorker to perform the scanning task asynchronously
+        SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
+            // Override the doInBackground method to perform the scanning task
+            @Override
+            protected String doInBackground() throws Exception {
+                // Create a StringBuilder to store the scan results
+                StringBuilder sb = new StringBuilder();
+                // Iterate through the range of ports to scan
+                for (int port = startPort; port <= endPort; port++) {
+                    try {
+                        // Create a socket and connect to the IP address and port
+                        Socket socket = new Socket();
+                        socket.connect(new InetSocketAddress(host, port), 5000);
+                        // Create a key to identify the service based on the port and protocol
+                        int key = port;
+                        // Get the service associated with the port and protocol
+                        Service service = getService(port);
+                        // If the service is unknown, print a message
+                        if (service.getServiceName().equals("Unknown")) {
+                            System.out.println("Service not found for key: " + key);
+                        }
+                        // Append the open port and service to the scan results
+                        sb.append("Port " + port + " is open - " + service.toString() + "\n");
+                        // Close the socket
+                        socket.close();
+                    } catch (IOException e) {
+                        // Ignore exceptions for closed ports
                     }
-                    // Append the open port and service to the scan results
-                    sb.append("Port " + port + " is open - " + service.toString() + "\n");
-                    // Close the socket
-                    socket.close();
-                } catch (IOException e) {
-                    // Ignore exceptions for closed ports
+                }
+                // Return the scan results
+                return sb.toString();
+            }
+    
+            // Override the done method to update the UI with the scan results
+            @Override
+            protected void done() {
+                try {
+                    // Get the scan results from the doInBackground method
+                    String scanResult = get();
+                    // Update the UI with the scan results
+                    SwingUtilities.invokeLater(() -> {
+                        resultArea.append(scanResult);
+                        String[] ports = scanResult.split("\n");
+                        for (String port : ports) {
+                            host host = new hostImpl();
+                            host.setServices(port);
+                            System.out.println(port);
+                            
+                        }
+                        hostImpl hostInstance = new hostImpl();
+                        String ipAddress = hostInstance.getIpAddress();
+                        String hostName = hostInstance.getHostName();
+                        String port = hostInstance.getPorts();
+                        String services = hostInstance.getServices();
+
+                        // Print the values
+                        System.out.println("IP Address: " + ipAddress);
+                        System.out.println("Host Name: " + hostName);
+                        System.out.println("Ports: " + port);
+                        System.out.println("Services: " + services);
+
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-            // Return the scan results
-            return sb.toString();
+        };
+    
+        // Call the execute method here
+        worker.execute();
+    }
+
+public static String resolveHostname(String host, JTextArea resultArea) {
+    StringBuilder sb = new StringBuilder();
+    int retries = 0;
+    int maxRetries = 4;
+
+    while (retries < maxRetries) {
+        try {
+            InetAddress address = InetAddress.getByName(host);
+            host h = new hostImpl();
+            h.setHostName(host);
+            return address.getHostAddress();
+
+        } catch (Exception e) {
+            sb.append("The hostname " + host + " could not be resolved, please try again");
+            resultArea.append(sb.toString());
+            retries++;
         }
+    }
 
-        // Override the done method to update the UI with the scan results
-        @Override
-        protected void done() {
-            try {
-                // Get the scan results from the doInBackground method
-                String scanResult = get();
-                // Update the UI with the scan results using the Event Dispatch Thread
-                SwingUtilities.invokeLater(() -> resultArea.append(scanResult));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    };
-
-    // Execute the SwingWorker to start the scanning task
-    worker.execute();
-    //worker.run();
+    System.out.println("Maximum number of failures reached, exiting...");
+    return null;
 }
-
-
-    // Method to resolve the hostname to an IP address
-   public static String resolveHostname(String host, JTextArea resultArea) {
-       StringBuilder sb = new StringBuilder();
-       // Initialize a counter for retries
-       int retries = 0;
-       int maxRetries = 4;
-
-       while (retries < maxRetries) {
-           try { // Use InetAddress class to get the IP address of the hostname
-               InetAddress address = InetAddress.getByName(host);
-               String hostIp = address.getHostAddress();
-               return hostIp;
-           } catch (Exception e) {
-               // If an exception occurs, inform the user
-               sb.append("The hostname " + host + " could not be resolved, please try again");
-               resultArea.append(sb.toString());
-               // Increment the retry counter
-               retries++;
-           }
-       }
-
-       // If the maximum number of retries is reached, inform the user and return null
-       System.out.println("Maximum number of failures reached, exiting...");
-       return null;
-   }
 
 
 
@@ -178,6 +191,8 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
     }
     static String getInputs() {
         String host = ipAddressField.getText();
+        hostImpl h = new hostImpl();
+        h.setIpAddress(host);
         int startPort;
         int endPort;
         if (scanMethodComboBox.getSelectedItem().equals("Port Scan")) {
@@ -205,13 +220,37 @@ public static void scanIp(int startPort, int endPort, String ipAddr, JTextArea r
             
         } else {
             // If it's a hostname, resolve it to an IP address using the resolveHostname method
-            String ipAddr = portScanner.resolveHostname(host, resultArea);
+            String ipAddr = resolveHostname(host, resultArea);
             scanResult = "Scanning hostname: " + host + " (resolved to IP: " + ipAddr + ")";
             System.out.println(ipAddr);
             scanIp(startPort, endPort, ipAddr, resultArea);
         }
         return scanResult;
+    
+    
+    }
+
+    public static Scanner getInput() {
+        return input;
     }
     
+    public static void setInput(Scanner input) {
+        portScanner.input = input;
+    }
+    
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
