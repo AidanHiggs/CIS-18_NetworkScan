@@ -64,7 +64,6 @@ public class NetworkScannerGUI extends JFrame {
                 hostUpdater.start();
             }
         });
-
         Action enterAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,7 +78,6 @@ public class NetworkScannerGUI extends JFrame {
         // Puts the result above the home screen
         add(new JScrollPane(resultArea), BorderLayout.NORTH);
     }
-
     public void getHosts() {
         hostUpdate instance = new hostUpdate(null);
         List<host> hosts = instance.getHosts();
