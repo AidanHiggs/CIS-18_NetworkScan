@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -112,6 +113,9 @@ public static void loadPortServices(String filename) {
                         sb.append("Port " + port + " is open - " + service.toString() + "\n");
                         // Close the socket
                         socket.close();
+                        // Add the open port to the hostImpl instance
+                        hostImpl hostInstance = new hostImpl();
+                        hostInstance.addOpenPort(port);
                     } catch (IOException e) {
                         // Ignore exceptions for closed ports
                     }
@@ -139,15 +143,12 @@ public static void loadPortServices(String filename) {
                         hostImpl hostInstance = new hostImpl();
                         String ipAddress = hostInstance.getIpAddress();
                         String hostName = hostInstance.getHostName();
-                        String port = hostInstance.getPorts();
-                        String services = hostInstance.getServices();
-
-                        // Print the values
+                        List<String> services = hostInstance.getServices();
+                        List<Integer> openPorts = hostInstance.getOpenPorts();
                         System.out.println("IP Address: " + ipAddress);
                         System.out.println("Host Name: " + hostName);
-                        System.out.println("Ports: " + port);
                         System.out.println("Services: " + services);
-
+                        System.out.println("Open Ports: " + openPorts);
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
