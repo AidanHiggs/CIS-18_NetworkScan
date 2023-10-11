@@ -66,7 +66,6 @@ public class osDetectionDecorator {
           }
       }
 
-      //public static void 
     
     public static void main(String[] args) throws Exception {
         osDetectionDecorator loadFingerprints = new osDetectionDecorator();

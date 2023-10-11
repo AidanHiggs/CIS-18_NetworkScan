@@ -14,7 +14,7 @@ public class hostUpdate extends Thread {
         String initialHost = ipAddressField.getText();
         while (true){
             String host = ipAddressField.getText();
-            if (!host.equals(initialHost)) {
+            if (!host.equals(initialHost) && host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
                 hostImpl hostInstance = hostFactory.createHost(host);
                 initialHost = host;
                 } 

@@ -9,7 +9,6 @@ public class Main {
             public void run() {
                 NetworkScannerGUI scanner = new NetworkScannerGUI();
                 scanner.setVisible(true);
-                //osDetectionDecorator loadFingerprints = new osDetectionDecorator();
             }
         });
     }
