@@ -22,6 +22,8 @@ public class hostUpdate extends Thread {
                 host hostInstance = hostFactory.createHost(host);
                 hosts.add(hostInstance);
             
+            if (!host.equals(initialHost) && host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
+                hostImpl hostInstance = hostFactory.createHost(host);
                 initialHost = host;
                 System.out.println(hostInstance);
                 }
