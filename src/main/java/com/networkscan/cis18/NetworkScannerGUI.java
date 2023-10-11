@@ -60,6 +60,8 @@ public class NetworkScannerGUI extends JFrame {
                 resultArea.setText("");
                 String scanResult = portScanner.getInputs();
                 resultArea.append(scanResult);
+                hostUpdate hostUpdater = new hostUpdate(ipAddressField);
+                hostUpdater.start();
             }
         });
         

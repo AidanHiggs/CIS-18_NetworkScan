@@ -1,10 +1,17 @@
 package com.networkscan.cis18;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class hostImpl implements host {
     public String ipAddress;
     private String hostName;
-    private String services;
-    private String ports;
+    private List<String> services;
+    private List<Integer> openPorts;
+
+   public hostImpl() {
+        openPorts = new ArrayList<>();
+    }
     
     public String getIpAddress() {
         return ipAddress;
@@ -22,23 +29,20 @@ public class hostImpl implements host {
         this.hostName = hostName;
     }
     
-
-    
-    public void setPorts(String ports) {
-        this.ports= ports;
-    }
-    
-    public String getServices() {
+    public List<String> getServices() {
         return services;
     }
     
-    public void setServices(String services) {
-        this.services = services;
+    public void setServices(String service) {
+        services.add(service);
     }
 
-    @Override
-    public String getPorts() {
-         return ports;
+    public void addOpenPort(int port) {
+        openPorts.add(port);
+    }
+
+    public List<Integer> getOpenPorts() {
+        return openPorts;
     }
 }
 

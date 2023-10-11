@@ -14,8 +14,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>20</maven.compiler.source>
-    <maven.compiler.target>20</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -31,6 +31,30 @@
         <artifactId>commons-net</artifactId>
         <version>3.9.0</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.pcap4j/pcap4j -->
+    <dependency>
+        <groupId>org.pcap4j</groupId>
+        <artifactId>pcap4j</artifactId>
+        <version>1.8.2</version>
+        <type>pom</type>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.pcap4j/pcap4j-packetfactory-static -->
+    <dependency>
+        <groupId>org.pcap4j</groupId>
+        <artifactId>pcap4j-packetfactory-static</artifactId>
+        <version>1.8.2</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.36</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>1.7.25</version>
+    </dependency>    
  </dependencies>
 
   <build>
