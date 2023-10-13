@@ -136,7 +136,7 @@ public static void loadPortServices(String filename) {
                         String[] ports = scanResult.split("\n");
                         for (String port : ports) {
                             host host = new hostImpl();
-                            host.setServices(port);
+                           
                             System.out.println(port);
                             
                         }

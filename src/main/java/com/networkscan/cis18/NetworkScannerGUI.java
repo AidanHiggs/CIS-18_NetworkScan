@@ -1,14 +1,11 @@
-//This is the NetworkScnnerGUI.java class
 package com.networkscan.cis18;
-
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;   
 import java.awt.event.KeyEvent;
-import java.io.File;           ;
+import java.util.List;
 
 public class NetworkScannerGUI extends JFrame {
     // Fields
@@ -17,6 +14,8 @@ public class NetworkScannerGUI extends JFrame {
     protected static JTextArea resultArea;
     protected static JButton scanButton;
     protected static JComboBox<String> scanMethodComboBox;
+    protected static List<host> hosts;
+    private hostUpdate hostUpdater;
 
     public NetworkScannerGUI() {
         // Set window properties
@@ -43,13 +42,13 @@ public class NetworkScannerGUI extends JFrame {
         homePanel.add(ipAddressLabel);
         homePanel.add(ipAddressField);
 
-        //Subnet Mask Label and Size
+        // Subnet Mask Label and Size
         JLabel subnetLabel = new JLabel("Enter Subnet Mask Here:");
         subnetField = new JTextField(20);
         homePanel.add(subnetLabel);
         homePanel.add(subnetField);
 
-        //Scan button label and response text field
+        // Scan button label and response text field
         scanButton = new JButton("Press to Scan");
         resultArea = new JTextArea(30, 30);
         resultArea.setEditable(false);
@@ -61,7 +60,7 @@ public class NetworkScannerGUI extends JFrame {
                 resultArea.setText("");
                 String scanResult = portScanner.getInputs();
                 resultArea.append(scanResult);
-                hostUpdate hostUpdater = new hostUpdate(ipAddressField);
+                hostUpdater = new hostUpdate(ipAddressField);
                 hostUpdater.start();
             }
         });
@@ -81,5 +80,11 @@ public class NetworkScannerGUI extends JFrame {
         add(new JScrollPane(resultArea), BorderLayout.NORTH);
     }
 
-
+    public void getHosts() {
+        hostUpdate instance = new hostUpdate(null);
+        List<host> hosts = instance.getHosts();
+        for (host host : hosts) {
+            System.out.println(host);
+        }
+    }
 }
