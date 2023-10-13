@@ -19,9 +19,9 @@ public interface host {
         void setServices(String services);
 
         int getHostId();
+        void setId(int id);\
+        int getHostId();
         void setId(int id);
-
-        
         
 }
 

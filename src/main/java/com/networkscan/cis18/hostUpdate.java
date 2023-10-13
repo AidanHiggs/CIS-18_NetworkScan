@@ -9,8 +9,6 @@ public class hostUpdate extends Thread {
     public List<host> hosts = new ArrayList();
     public hostUpdate(JTextField ipAddressField, JTextField subnetField) {
         this.ipAddressField = ipAddressField;
-        this.subnetField = subnetField;
-        run();
     }
     public List<host> getHosts() {
         return hosts;
@@ -20,8 +18,8 @@ public class hostUpdate extends Thread {
         String subnet = subnetField.getText();
         while (true){
             String host = ipAddressField.getText();
-            if (!host.equals(initialHost)&&!host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
-                host hostInstance = hostFactory.createHost(host, subnet);
+            if (!host.equals(initialHost) && host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")&&!host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
+                host hostInstance = hostFactory.createHost(host);
                 hosts.add(hostInstance);
             
                 initialHost = host;
