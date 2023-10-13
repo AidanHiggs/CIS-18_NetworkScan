@@ -42,7 +42,7 @@ public class osDetectionDecorator {
               tcpPacketBuilder
                       .srcPort(TcpPort.getInstance((short) 1234))
                       .dstPort(TcpPort.HTTP)
-                      .dstAddr(InetAddress.getByName("192.168.1.176"))
+                      .dstAddr(InetAddress.getByName("127.0.0.1"))
                       .syn(true);
           } catch (UnknownHostException e) {
               // Handle exception

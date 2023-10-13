@@ -8,6 +8,7 @@ public class hostImpl implements host {
     private String hostName;
     private List<String> services;
     private List<Integer> openPorts;
+    public int id;
 
    public hostImpl() {
         openPorts = new ArrayList<>();
@@ -43,6 +44,14 @@ public class hostImpl implements host {
 
     public List<Integer> getOpenPorts() {
         return openPorts;
+    }
+
+    public int getHostId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
 

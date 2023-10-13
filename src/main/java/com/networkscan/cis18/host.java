@@ -14,6 +14,9 @@ public interface host {
 
         List<String> getServices();
         void setServices(String services);
+
+        int getHostId();
+        void setId(int id);
         
 }
 
