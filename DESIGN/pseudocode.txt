@@ -1,0 +1,36 @@
+ public class osDetectionDecorator {
+
+    private String lastDetectedOS;
+
+    public void detectOS(hostImpl host) {
+        // Pseudo code
+        // 1. Send preconfigured packets to the host.
+        // 2. Analyze the response against known OS fingerprints.
+        // 3. Determine the most likely OS based on the fingerprint match.
+        // 4. Store the detected OS in `lastDetectedOS`.
+
+        // Example:
+        // Packet responsePacket = sendProbePacket(host.getIpAddress());
+        // lastDetectedOS = analyzeResponse(responsePacket);
+    }
+
+    public String getDetectedOS() {
+        // Pseudo code
+        // 1. Return the last detected OS information.
+
+        // Example:
+        // return lastDetectedOS;
+    }
+
+    public void updateHostWithDetectedOS(hostImpl host) {
+        // Pseudo code
+        // 1. Check if we have any detected OS information.
+        // 2. Update the host's OS information with the detected OS.
+
+        // Example:
+        // if (lastDetectedOS != null) {
+        //     host.setOperatingSystem(lastDetectedOS);
+        // }
+    }
+}
+
