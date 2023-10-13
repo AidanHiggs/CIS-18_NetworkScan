@@ -14,21 +14,17 @@ public class hostUpdate extends Thread {
     public List<host> getHosts() {
         return hosts;
     }
-
-    @Override
-    public void run() {
         String initialHost = ipAddressField.getText();
         while (true){
             String host = ipAddressField.getText();
-            if (!host.equals(initialHost) && host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")&&!host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
+            if (!host.equals(initialHost)&&!host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
                 host hostInstance = hostFactory.createHost(host);
                 hosts.add(hostInstance);
             
-            if (!host.equals(initialHost) && host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
-                hostImpl hostInstance = hostFactory.createHost(host);
                 initialHost = host;
+                }
                 }
         }
         
     }
-}
+
