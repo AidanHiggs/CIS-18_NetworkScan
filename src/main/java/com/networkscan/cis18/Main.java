@@ -9,9 +9,8 @@ public class Main {
                 
                 NetworkScannerGUI scanner = new NetworkScannerGUI();
                 scanner.setVisible(true);
-        
-                //osDetectionDecorator loadFingerprints = new osDetectionDecorator();
-                
+                PingDecorator myPing = new PingDecorator();
+                myPing.printStuff();
             }
         });
     }

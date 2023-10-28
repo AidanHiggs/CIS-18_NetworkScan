@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export JAVA_HOME=/home/adriennevansummern/Downloads/ideaIC-2023.2.3/idea-IC-232.10072.27/jbr/
+export PATH=${JAVA_HOME}/bin:/home/adriennevansummern/.local/bin:/home/adriennevansummern/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/var/lib/snapd/snap/bin
+
+sudo /home/adriennevansummern/.jdks/openjdk-21/bin/java -Djava.library.path=/home/adriennevansummern/IdeaProjects/CIS-18_NetworkScan/src/main/resources/native -javaagent:/opt/idea/lib/idea_rt.jar=37253:/opt/idea/bin -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath /home/adriennevansummern/IdeaProjects/CIS-18_NetworkScan/target/classes:/home/adriennevansummern/.m2/repository/commons-net/commons-net/3.9.0/commons-net-3.9.0.jar:/home/adriennevansummern/.m2/repository/org/pcap4j/pcap4j-packetfactory-static/1.8.2/pcap4j-packetfactory-static-1.8.2.jar:/home/adriennevansummern/.m2/repository/org/pcap4j/pcap4j-core/1.8.2/pcap4j-core-1.8.2.jar:/home/adriennevansummern/.m2/repository/net/java/dev/jna/jna/5.3.1/jna-5.3.1.jar:/home/adriennevansummern/.m2/repository/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar:/home/adriennevansummern/.m2/repository/org/slf4j/slf4j-jdk14/1.7.25/slf4j-jdk14-1.7.25.jar com.networkscan.cis18.Main
