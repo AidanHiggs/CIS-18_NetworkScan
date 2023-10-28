@@ -7,9 +7,11 @@ public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                NetworkScannerGUI scanner = new NetworkScannerGUI();
-                scanner.setVisible(true);
+                //NetworkScannerGUI scanner = new NetworkScannerGUI();
+                //scanner.setVisible(true);
                 //osDetectionDecorator loadFingerprints = new osDetectionDecorator();
+                PingDecorator myPing = new PingDecorator();
+                myPing.printStuff();
             }
         });
     }
