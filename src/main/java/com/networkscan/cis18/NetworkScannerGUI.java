@@ -1,12 +1,10 @@
 package com.networkscan.cis18;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
-
 public class NetworkScannerGUI extends JFrame {
     // Fields
     protected static JTextField ipAddressField;
@@ -31,7 +29,7 @@ public class NetworkScannerGUI extends JFrame {
 
         // Label for scan methods and add combo box selections to choose from
         JLabel scanMethodLabel = new JLabel("Select Your Scan Method:");
-        String[] scanMethods = {"Ping", "Ping Sweep", "Port Scan", "Tracert, whoIs, ETC."};
+        String[] scanMethods = {"Ping", "host discovery", "Port Scan", "Tracert, whoIs, ETC."};
         scanMethodComboBox = new JComboBox<>(scanMethods);
         homePanel.add(scanMethodLabel);
         homePanel.add(scanMethodComboBox);
@@ -58,10 +56,20 @@ public class NetworkScannerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 resultArea.setText("");
-                String scanResult = portScanner.getInputs();
-                resultArea.append(scanResult);
-                hostUpdater = new hostUpdate(ipAddressField);
-                hostUpdater.start();
+                String selectedScanMethod = scanMethodComboBox.getSelectedItem().toString();
+                if(scanMethodComboBox.getSelectedItem().equals("host discovery")){ {
+                    hostUpdater = new hostUpdate(ipAddressField, subnetField);
+                    hostDisco hostDisco = new hostDisco();
+                    try {
+                        hostDisco.init(selectedScanMethod);
+                    } catch (Exception e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }}else{
+                    String scanResult = portScanner.getInputs();
+                    resultArea.append(scanResult);
+                }
             }
         });
 
@@ -81,7 +89,7 @@ public class NetworkScannerGUI extends JFrame {
     }
 
     public void getHosts() {
-        hostUpdate instance = new hostUpdate(null);
+        hostUpdate instance = new hostUpdate(null, null);
         List<host> hosts = instance.getHosts();
         for (host host : hosts) {
             System.out.println(host);
