@@ -1,7 +1,15 @@
-/home/flabbydino/Desktop/fall 2023/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/NetworkScannerGUI.java
-/home/flabbydino/Desktop/fall 2023/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/hostImpl.java
-/home/flabbydino/Desktop/fall 2023/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/portScanner.java
-/home/flabbydino/Desktop/fall 2023/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/host.java
-/home/flabbydino/Desktop/fall 2023/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/Service.java
-/home/flabbydino/Desktop/fall 2023/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/osDetectionDecorator.java
-/home/flabbydino/Desktop/fall 2023/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/Main.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/host.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/hostImpl.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/NetworkScannerGUI.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/Service.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/setSubnet.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/osDetectionDecorator.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/hostFactory.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/getip.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/Networknterface.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/hostUpdate.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/impliments.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/portScanner.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/Main.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/setNet.java
+/home/aidan/Documents/CIS-18_NetworkScan/src/main/java/com/networkscan/cis18/hostDisco.java

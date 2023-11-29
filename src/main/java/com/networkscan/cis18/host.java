@@ -1,10 +1,13 @@
 package com.networkscan.cis18;
-
 import java.util.List;
 
 public interface host {
         String getIpAddress();
         void setIpAddress(String ipAddress);
+
+        String getSubnet();
+        
+         void setSubnet(String subnet);
         
         String getHostName();
         void setHostName(String hostName);
@@ -17,6 +20,8 @@ public interface host {
 
         int getHostId();
         void setId(int id);
+
+        
         
 }
 

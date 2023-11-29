@@ -8,6 +8,8 @@ public class hostFactory extends NetworkScannerGUI {
         host.setSubnet(subnet);
         //host.setSubnet = subnetField.getText(); 
         host.setId(id++);
+        
+        
         return host;
 
     }}

@@ -3,13 +3,13 @@ package com.networkscan.cis18;
 import java.util.ArrayList;
 import java.util.List;
 
-public class hostImpl implements host {
+public class hostImpl implements host{
     public String ipAddress;
     private String hostName;
     private List<String> services;
     private List<Integer> openPorts;
     public int id;
-
+    public String subnet;
    public hostImpl() {
         openPorts = new ArrayList<>();
     }
@@ -53,6 +53,17 @@ public class hostImpl implements host {
     public void setId(int id) {
         this.id = id;
     }
+
+    public void setSubnet(String subnet) {
+        this.subnet = subnet;
+        
+        
+    }
+    public String getSubnet() {
+       
+       return subnet;
+    }
+
 }
 
    
