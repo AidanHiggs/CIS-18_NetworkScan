@@ -1,5 +1,4 @@
 package com.networkscan.cis18;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
