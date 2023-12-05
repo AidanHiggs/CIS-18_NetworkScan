@@ -1,5 +1,4 @@
 package com.networkscan.cis18;
-import com.networkscan.cis18.NetworkScannerGUI;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -41,18 +40,6 @@ public static String getIpAddress() {
 }
 
     // Method to get the start port from the user
-    public static int getStartPort(Scanner input) {
-        System.out.println("Enter the start port");
-        int startPort = input.nextInt();
-        return startPort;
-    }
-
-    // Method to get the end port from the user
-    public static int getEndPort(Scanner input) {
-        System.out.println("Enter the end port");
-        int endPort = input.nextInt();
-        return endPort;
-    }
 
 /**
  * Loads port services from a file and populates the portServicesMap.
@@ -208,14 +195,15 @@ public static String resolveHostname(String host, JTextArea resultArea) {
             startPort = Integer.parseInt(startPortInput);
             endPort = Integer.parseInt(endPortInput);
         } else {
-            startPort = getStartPort(null);
-            endPort = getEndPort(null);;
+            startPort = 1;
+            endPort = 65535;
         }
     
         String scanResult;
     
         if (host.matches("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")) {
             // If it's an IP address, directly call the scanIp method
+            
             scanResult = "Scanning IP: " + host + "\n";
             scanIp(startPort, endPort, host, resultArea);
             
