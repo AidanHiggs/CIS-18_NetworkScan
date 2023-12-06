@@ -1,24 +1,28 @@
 package com.networkscan.cis18;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Scanner;
 
-public class PingDecorator{
+public class PingDecorator extends portScanner {
+    private portScanner scanner;
+    private String[] pingResults;
+
     static {
-        String libraryName = "pingjni";
+        loadNativeLibrary("pingjni");
+    }
+
+    public PingDecorator(portScanner scanner) {
+        this.scanner = scanner;
+        this.pingResults = new String[10]; // we can add a slectionbox tochange that number of ping results if we want
+    }
+
+    private static void loadNativeLibrary(String libraryName) {
         try {
             String libName = "native/" + System.mapLibraryName(libraryName);
             InputStream is = ClassLoader.getSystemResourceAsStream(libName);
-            /* Alternate ways to load files from a jar file.
-             * Method 1:
-             * ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-             * InputStream is = classLoader.getResourceAsStream(libName);
-             * Method 2:
-             * InputStream inputStream = YourClass.class.getResourceAsStream("/"+libName);
-             */
             if (is == null) {
                 throw new UnsatisfiedLinkError("Library not found on classpath: " + libraryName);
             }
@@ -32,43 +36,32 @@ public class PingDecorator{
                     out.write(buffer, 0, bytesRead);
                 }
             }
-
             System.load(tempFile.getAbsolutePath());
         } catch (IOException e) {
             throw new UnsatisfiedLinkError("Failed to load library: " + e.getMessage());
         }
-
-    }
-
-    private String[] pingResults;
-    public PingDecorator() {
-        this.pingResults = new String[10];  // I don't expect any more than 10 results.
     }
 
     private native void pingHost(String host, String[] results);
 
-    private void addPingResolution() {
-        // Get user input for ping
-        System.out.println("Enter address to ping");
-        Scanner input = new Scanner(System.in);
-        String PingAddress;
-        PingAddress = input.nextLine();
-        //System.out.println(this.host.getDomainName());
+    public void addPingResolution(String pingAddress) {
         System.out.println("Adding Host Ping capability...");
-        this.pingHost(PingAddress , this.pingResults);
-        //if(Arrays.stream(this.pingResults).findAny().isPresent()) {
-        //notifyWatchers();
-        //}
-        // Adding some printing just for fun.
+        pingHost(pingAddress, this.pingResults);
         for (String result : this.pingResults) {
             if (result != null) {
-                System.out.print("Ping Result: ");
-                System.out.println(result);
+                System.out.println("Ping Result: " + result);
             }
         }
     }
 
-    public void printStuff() {
-        addPingResolution();
+    @Override
+    public String scanIp(String host, int startPort, int endPort) {
+        // Perform regular port scanning
+        String scanResult = scanner.scanIp(host, startPort, endPort);
+
+        // Add ping resolution
+        addPingResolution(host);
+
+        return scanResult;
     }
 }

@@ -1,9 +1,8 @@
 package com.networkscan.cis18;
 
-public class getip extends NetworkScannerGUI {
-    public String getIpAddress() {
-        String ipAddress = ipAddressField.getText();
-        return ipAddress;
+public class getip implements IpAddressStrategy {
+    @Override
+    public String getIpAddress(NetworkScannerModel model) {
+        return model.getIpAddress();
     }
-    
 }

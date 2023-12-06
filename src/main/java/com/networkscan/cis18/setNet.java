@@ -5,7 +5,6 @@ import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-
 import org.pcap4j.core.BpfProgram;
 import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PcapHandle;
@@ -16,61 +15,45 @@ import org.pcap4j.packet.TcpPacket;
 public class setNet {
     public static PcapHandle networkInt = null;
     public static NetworkInterface networkInterface = null;
-    public static PcapHandle setPcapNetworkInterface() throws NotOpenException {
-        List<String> networkInterf = new ArrayList<>();
-        List<NetworkInterface> networkInterfaces = new ArrayList<>();
-        try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
-                NetworkInterface ni = interfaces.nextElement();
-                if (ni.isUp() && !ni.isLoopback()) {
-                    networkInterfaces.add(ni);
-                    networkInterf.add(ni.getName());
-                }
+
+    public static PcapHandle setPcapNetworkInterface() throws PcapNativeException, IOException, NotOpenException {
+        List<String> networkInterfacesNames = new ArrayList<>();
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        while (interfaces.hasMoreElements()) {
+            NetworkInterface ni = interfaces.nextElement();
+            if (ni.isUp() && !ni.isLoopback()) {
+                networkInterfacesNames.add(ni.getName());
             }
-            for (String networkInterface : networkInterf) {
-                if (canReachInternet(networkInterface)) {
-                    networkInt = new PcapHandle.Builder(networkInterface).build();
-                    networkInt.setFilter("tcp", BpfProgram.BpfCompileMode.OPTIMIZE);
-                    setNetworkInterface(networkInterface);
-                    return networkInt;
-                
-                }
-            }
-        } catch (PcapNativeException | IOException e) {
-            e.printStackTrace();
         }
 
-        return networkInt;
+        for (String networkInterfaceName : networkInterfacesNames) {
+            if (canReachInternet(networkInterfaceName)) {
+                networkInt = new PcapHandle.Builder(networkInterfaceName).timeoutMillis(500).build() ;
+                networkInt.setFilter("tcp", BpfProgram.BpfCompileMode.OPTIMIZE);
+                setNetworkInterface(networkInterfaceName);
+                return networkInt;
+            }
+        }
+        throw new IOException("No suitable network interface found.");
     }
 
-    private static boolean canReachInternet(String networkInterface) {
-        try {
-            PcapHandle handle = new PcapHandle.Builder(networkInterface).build();
+    private static boolean canReachInternet(String networkInterfaceName) throws PcapNativeException, NotOpenException, IOException {
+        try (PcapHandle handle = new PcapHandle.Builder(networkInterfaceName).build()) {
             handle.setFilter("tcp", BpfProgram.BpfCompileMode.OPTIMIZE);
-
             Packet packet = handle.getNextPacket();
             if (packet instanceof TcpPacket) {
                 TcpPacket tcpPacket = (TcpPacket) packet;
-                if (tcpPacket.getHeader().getSyn()) {
-                    return true;
-                }
+                return tcpPacket.getHeader().getSyn();
             }
-
-            handle.close();
-        } catch (PcapNativeException | NotOpenException e) {
-            e.printStackTrace();
         }
-
         return false;
-
-        
     }
-    private static void setNetworkInterface(String networkInterfaceName) {
-        try {
-            networkInterface = NetworkInterface.getByName(networkInterfaceName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+    private static void setNetworkInterface(String networkInterfaceName) throws IOException {
+        networkInterface = NetworkInterface.getByName(networkInterfaceName);
+    }
+
+    public Object getNetworkHandle() {
+        return null;
     }
 }
