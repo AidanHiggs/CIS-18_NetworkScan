@@ -6,15 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-import org.pcap4j.*;
 import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PcapHandle;
 import org.pcap4j.core.PcapNativeException;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 import org.pcap4j.packet.namednumber.TcpPort;
-import org.pcap4j.core.PcapHandle;
-import org.pcap4j.core.BpfProgram;
 
 public class hostDisco {
     private NetworkScannerModel model;
@@ -25,9 +22,13 @@ public class hostDisco {
         this.networkSettings = networkSettings;
     }
 
+    public void setNetworkSettings() throws PcapNativeException, IOException, NotOpenException {
+        // Using setNet to initialize network settings and PcapHandle
+        networkSettings.setPcapNetworkInterface();
+    }
+
     public List<String> tcpSweep() throws Exception {
         int totalHosts = calculateDevices();
-        networkSettings.setPcapNetworkInterface();
         PcapHandle networkInt = (PcapHandle) networkSettings.getNetworkHandle();
         ArrayList<InetAddress> hostAddresses = generateHostAddresses(networkInt, totalHosts);
         List<String> discoveredHosts = new ArrayList<>();
@@ -42,7 +43,7 @@ public class hostDisco {
         return discoveredHosts;
     }
 
-    private int calculateDevices() throws IllegalArgumentException, PcapNativeException {
+    public int calculateDevices() throws IllegalArgumentException, PcapNativeException {
         int subnetBits = Integer.parseInt(model.getSubnetMask());
         if (subnetBits <= 0) {
             throw new IllegalArgumentException("Subnet is empty or invalid");
@@ -51,8 +52,8 @@ public class hostDisco {
         return (int) Math.pow(2, hostBits) - 2;
     }
 
-    private boolean sendTcpPacketAndCheckResponse(InetAddress hostAddr, PcapHandle networkInt) 
-            throws PcapNativeException, IOException, NotOpenException, TimeoutException, InterruptedException {
+    public boolean sendTcpPacketAndCheckResponse(InetAddress hostAddr, PcapHandle networkInt) 
+            throws PcapNativeException, IOException, NotOpenException {
         TcpPacket.Builder tcpPacketBuilder = new TcpPacket.Builder();
         tcpPacketBuilder.srcPort(TcpPort.getInstance((short) 1234))
                         .dstPort(TcpPort.HTTP)
@@ -61,12 +62,16 @@ public class hostDisco {
 
         TcpPacket tcpPacket = tcpPacketBuilder.build();
         networkInt.sendPacket(tcpPacket);
-        int pcap_set_timeout = 500;       
-        Packet response = networkInt.getNextPacketEx(); // Get the next packet
-        return response != null;
+        try {
+            Packet response = networkInt.getNextPacketEx();
+            return response != null;
+        } catch (NotOpenException | TimeoutException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    private ArrayList<InetAddress> generateHostAddresses(PcapHandle networkInt, int totalHosts) throws IOException {
+    public ArrayList<InetAddress> generateHostAddresses(PcapHandle networkInt, int totalHosts) throws IOException {
         ArrayList<InetAddress> hostAddresses = new ArrayList<>();
         String ipAddressString = model.getIpAddress();
         InetAddress ipAddress = InetAddress.getByName(ipAddressString);

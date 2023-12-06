@@ -53,7 +53,7 @@ public class setNet {
         networkInterface = NetworkInterface.getByName(networkInterfaceName);
     }
 
-    public Object getNetworkHandle() {
-        return null;
+    public static Object getNetworkHandle() {
+        return networkInt;
     }
 }
