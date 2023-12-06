@@ -43,6 +43,7 @@ public class NetworkScannerGUI extends JFrame {
         // Subnet Mask Label and Size
         JLabel subnetLabel = new JLabel("Enter Subnet Mask Here:");
         subnetField = new JTextField(20);
+        System.out.println("paignoinagn");
         homePanel.add(subnetLabel);
         homePanel.add(subnetField);
 
@@ -57,30 +58,39 @@ public class NetworkScannerGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 resultArea.setText("");
                 String selectedScanMethod = scanMethodComboBox.getSelectedItem().toString();
-                if(scanMethodComboBox.getSelectedItem().equals("host discovery")){ {
-                    hostUpdater = new hostUpdate(ipAddressField, subnetField);
-                    hostDisco hostDisco = new hostDisco();
-                    try {
-                        hostDisco.init(selectedScanMethod);
-                    } catch (Exception e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-                }}else{
-                    String scanResult = portScanner.getInputs();
-                    resultArea.append(scanResult);
+                
+                switch (selectedScanMethod) {
+                    case "host discovery":
+                        hostUpdater = new hostUpdate(ipAddressField, subnetField);
+                        hostUpdater.start();
+                        hostDisco hostDisco = new hostDisco();
+                        try {
+                            hostDisco.main(selectedScanMethod);
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
+                        }
+                        System.out.println();
+                        break;
+                    case "Port Scan":
+                        hostUpdater = new hostUpdate(ipAddressField, subnetField);
+                        hostUpdater.start();
+                        String scanResult = portScanner.getInputs();
+                        resultArea.append(scanResult);
+                        break;
+                    case "Ping":
                 }
             }
         });
+        
 
-        Action enterAction = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                scanButton.doClick();
-            }
-        };
-        scanButton.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
-        scanButton.getActionMap().put("Enter", enterAction);
+        // Action enterAction = new AbstractAction() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         scanButton.doClick();
+        //     }
+        // };
+        // scanButton.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
+        // scanButton.getActionMap().put("Enter", enterAction);
 
         // Makes the home screen appear in the middle of the screen instead of bottom right
         add(homePanel, BorderLayout.CENTER);

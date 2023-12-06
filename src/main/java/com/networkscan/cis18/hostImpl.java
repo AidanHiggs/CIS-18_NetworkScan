@@ -9,9 +9,11 @@ public class hostImpl implements host{
     private List<String> services;
     private List<Integer> openPorts;
     public int id;
-    public String subnet;
+    public int subnet;
    public hostImpl() {
         openPorts = new ArrayList<>();
+        services = new ArrayList<>();
+
     }
     
     public String getIpAddress() {
@@ -54,12 +56,12 @@ public class hostImpl implements host{
         this.id = id;
     }
 
-    public void setSubnet(String subnet) {
+    public void setSubnet(int subnet) {
         this.subnet = subnet;
         
         
     }
-    public String getSubnet() {
+    public int getSubnet() {
        
        return subnet;
     }

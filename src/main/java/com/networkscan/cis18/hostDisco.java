@@ -14,17 +14,18 @@ import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 import org.pcap4j.packet.namednumber.TcpPort;
 import org.pcap4j.util.NifSelector;
-
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 public class hostDisco extends NetworkScannerGUI {
 
     private static int calculateDevices() throws NotOpenException {
-        String subnetRaw = subnetField.getText();
-        if (subnetRaw.isEmpty()) {
+        System.out.println("calculating devices");
+        
+        int subnetBits = new setSubnet().getSubnet();
+        System.out.println(subnetBits);
+        if (subnetBits == 0) {
             throw new IllegalArgumentException("Subnet is empty");
         }
-        int subnetBits = Integer.parseInt(subnetRaw);
         int hostBits = 32 - subnetBits;
         int totalHosts = (int) Math.pow(2, hostBits) - 2;
         System.out.println(totalHosts);
@@ -38,6 +39,7 @@ public class hostDisco extends NetworkScannerGUI {
         ArrayList<InetAddress> hostAddresses = generateHostAddresses(networkInt, totalHosts);
         List<String>discoveredHosts = new ArrayList<>();
         for (InetAddress hostAddr : hostAddresses) {
+            System.out.println("scannning");
             TcpPacket.Builder tcpPacketBuilder = new TcpPacket.Builder();
             tcpPacketBuilder
                     .srcPort(TcpPort.getInstance((short) 1234))
@@ -48,7 +50,9 @@ public class hostDisco extends NetworkScannerGUI {
             TcpPacket tcpPacket = tcpPacketBuilder.build();
             try {
                 networkInt.sendPacket(tcpPacket);
-                Packet responsePacket = networkInt.getNextPacketEx(); // Changed to getNextPacketEx() to handle exceptions
+                System.out.println("!!!sent!!!");
+                Packet responsePacket = networkInt.getNextPacketEx(); 
+                System.out.println("!!!got!!!");
                 String synPacket = responsePacket.toString();
                 discoveredHosts.add(hostAddr.getHostAddress());
             } catch (Exception e) {
@@ -86,7 +90,8 @@ public class hostDisco extends NetworkScannerGUI {
         return hostAddresses;
     }
  
-    public void init(String selectedScanMethod) throws Exception {
+    public void main(String selectedScanMethod) throws Exception {
+        System.out.println("Made IT INTO DISCO");
         if (selectedScanMethod.equals("host discovery")) {
             List<String> discoveredHosts = tcpSweep();
             StringBuilder sb = new StringBuilder();

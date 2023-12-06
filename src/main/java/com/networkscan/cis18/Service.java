@@ -25,8 +25,4 @@ public class Service {
         this.serviceName = serviceName;
     }
 
-    @Override
-    public  String toString() {
-        return " " + this.serviceName;
-    }
 }

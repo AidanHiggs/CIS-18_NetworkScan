@@ -3,11 +3,12 @@ import java.util.List;
 
 public interface host {
         String getIpAddress();
+
         void setIpAddress(String ipAddress);
 
-        String getSubnet();
+        int getSubnet();
         
-         void setSubnet(String subnet);
+        void setSubnet(int subnet);
         
         String getHostName();
         void setHostName(String hostName);
@@ -19,6 +20,7 @@ public interface host {
         void setServices(String services);
 
         int getHostId();
+
         void setId(int id);
 
         

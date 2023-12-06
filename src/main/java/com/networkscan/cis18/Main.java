@@ -9,8 +9,8 @@ public class Main {
                 
                 NetworkScannerGUI scanner = new NetworkScannerGUI();
                 scanner.setVisible(true);
-                PingDecorator myPing = new PingDecorator();
-                myPing.printStuff();
+               // PingDecorator myPing = new PingDecorator();
+                //myPing.printStuff();
             }
         });
     }
