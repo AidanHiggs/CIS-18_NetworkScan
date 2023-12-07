@@ -44,14 +44,16 @@ public class PingDecorator extends portScanner {
 
     private native void pingHost(String host, String[] results);
 
-    public void addPingResolution(String pingAddress) {
+    public String addPingResolution(String pingAddress) {
         System.out.println("Adding Host Ping capability...");
         pingHost(pingAddress, this.pingResults);
         for (String result : this.pingResults) {
             if (result != null) {
                 System.out.println("Ping Result: " + result);
+                return result;
             }
         }
+        return "ping could not be returned";
     }
 
     @Override
@@ -63,5 +65,8 @@ public class PingDecorator extends portScanner {
         addPingResolution(host);
 
         return scanResult;
+    }
+    public String pingString(String host){
+        return(addPingResolution(host));
     }
 }

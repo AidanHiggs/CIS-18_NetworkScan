@@ -7,10 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Main" />
+        <module name="networkScanner" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="networkScanner" target="21" />
-    </bytecodeTargetLevel>
   </component>
 </project>
