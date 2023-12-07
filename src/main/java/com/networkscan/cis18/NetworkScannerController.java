@@ -51,7 +51,7 @@ public class NetworkScannerController {
 
     private void performHostDiscovery() {
         try {
-            List<String> discoveredHosts = hostDisco.tcpSweep(model.getSubnetMask());
+            List<String> discoveredHosts = hostDisco.tcpSweep();
             view.getResultArea().setText(String.join("\n", discoveredHosts));
         } catch (Exception ex) {
             view.getResultArea().setText("Error in host discovery: " + ex.getMessage());
@@ -64,7 +64,8 @@ public class NetworkScannerController {
     }
 
     private void performPing() {
-        String pingResult = pingDecorator.scanIp(model.getIpAddress(), 1, 1);
+        //String pingResult = pingDecorator.scanIp(model.getIpAddress(), 1, 1);
+        String pingResult = pingDecorator.pingString(model.getIpAddress());
         view.getResultArea().setText(pingResult);
     }
 
