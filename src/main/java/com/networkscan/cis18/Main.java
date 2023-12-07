@@ -10,15 +10,12 @@ public class Main {
                 NetworkScannerModel model = new NetworkScannerModel();
                 NetworkScannerView view = new NetworkScannerView();
                 
-                // Initialize the network settings component (setNet)
-                setNet networkSettings = new setNet(); // Assuming default constructor
-
                 // Initialize the portScanner and PingDecorator
                 portScanner portScanner = new portScanner(); // Assuming default constructor
                 PingDecorator pingDecorator = new PingDecorator(portScanner); // Assuming this is the correct way to initialize
 
-                // Initialize hostDisco
-                hostDisco hostDiscovery = new hostDisco(model, networkSettings);
+                // Initialize hostDisco with PingDecorator instead of setNet
+                hostDisco hostDiscovery = new hostDisco(model, pingDecorator);
 
                 // Pass the properly initialized components to the controller
                 NetworkScannerController controller = new NetworkScannerController(model, view, portScanner, pingDecorator, hostDiscovery);

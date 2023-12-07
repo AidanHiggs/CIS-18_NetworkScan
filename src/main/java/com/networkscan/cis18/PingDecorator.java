@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class PingDecorator extends portScanner {
     private portScanner scanner;
     private String[] pingResults;
+    private static final int TIMEOUT_MILLIS = 5000; // 5 seconds timeout
 
     static {
         loadNativeLibrary("pingjni");
@@ -16,7 +17,7 @@ public class PingDecorator extends portScanner {
 
     public PingDecorator(portScanner scanner) {
         this.scanner = scanner;
-        this.pingResults = new String[10]; // we can add a slectionbox tochange that number of ping results if we want
+        this.pingResults = new String[10]; // Adjust this based on your needs
     }
 
     private static void loadNativeLibrary(String libraryName) {
@@ -42,11 +43,11 @@ public class PingDecorator extends portScanner {
         }
     }
 
-    private native void pingHost(String host, String[] results);
+    private native void pingHost(String host, String[] results, int timeoutMillis);
 
     public void addPingResolution(String pingAddress) {
         System.out.println("Adding Host Ping capability...");
-        pingHost(pingAddress, this.pingResults);
+        pingHost(pingAddress, this.pingResults, TIMEOUT_MILLIS);
         for (String result : this.pingResults) {
             if (result != null) {
                 System.out.println("Ping Result: " + result);
@@ -54,14 +55,14 @@ public class PingDecorator extends portScanner {
         }
     }
 
+    public String[] getPingResults() {
+        return pingResults;
+    }
+
     @Override
     public String scanIp(String host, int startPort, int endPort) {
-        // Perform regular port scanning
         String scanResult = scanner.scanIp(host, startPort, endPort);
-
-        // Add ping resolution
         addPingResolution(host);
-
         return scanResult;
     }
 }
