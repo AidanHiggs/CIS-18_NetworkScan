@@ -20,7 +20,7 @@ public class PingDecorator extends portScanner {
         this.pingResults = new String[10]; // Adjust this based on your needs
     }
 
-    private static void loadNativeLibrary(String libraryName) {
+     private static void loadNativeLibrary(String libraryName) {
         try {
             String libName = "native/" + System.mapLibraryName(libraryName);
             InputStream is = ClassLoader.getSystemResourceAsStream(libName);
@@ -43,24 +43,26 @@ public class PingDecorator extends portScanner {
         }
     }
 
-    private native void pingHost(String host, String[] results, int timeoutMillis);
+    private native void pingHost(String host, String[] pingResults, int timeoutMillis);
 
     public void addPingResolution(String pingAddress) {
-        System.out.println("Adding Host Ping capability...");
         pingHost(pingAddress, this.pingResults, TIMEOUT_MILLIS);
-        for (String result : this.pingResults) {
-            if (result != null) {
-                System.out.println("Ping Result: " + result);
-            }
-        }
+       // for (String result : this.pingResults) {
+          //  if (result != null) {
+             //   System.out.println("Ping Result: " + result);
+         //   }
+        //}
     }
 
-    public String[] getPingResults() {
+    public String [] getPingResults(String ipAddress) {
+        addPingResolution(ipAddress);
         return pingResults;
     }
 
     @Override
     public String scanIp(String host, int startPort, int endPort) {
+        startPort = 1;
+        endPort = 65535;
         String scanResult = scanner.scanIp(host, startPort, endPort);
         addPingResolution(host);
         return scanResult;

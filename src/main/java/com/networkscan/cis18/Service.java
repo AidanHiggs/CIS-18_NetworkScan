@@ -16,4 +16,8 @@ public final class Service {
     public String getServiceName() {
         return serviceName;
     }
+    @Override
+    public  String toString() {
+        return " " + this.serviceName;
+    }
 }

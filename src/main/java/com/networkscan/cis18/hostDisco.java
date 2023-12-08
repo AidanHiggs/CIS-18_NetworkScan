@@ -27,16 +27,15 @@ public class hostDisco {
     }
 
     private boolean pingHost(String hostAddress) {
-        pingDecorator.addPingResolution(hostAddress);
-        String[] results = pingDecorator.getPingResults();
-        for (String result : results) {
-            if (result != null && result.contains("Reply from")) {
+        String[] results = pingDecorator.getPingResults(hostAddress);
+        for(String result : results) {
+             if (result.contains("64 bytes from")) {
                 return true;
-            }
+            }else{return false;}
         }
         return false;
-    }
 
+}
     public int calculateDevices() {
         int subnetBits = Integer.parseInt(model.getSubnetMask());
         if (subnetBits <= 0) {

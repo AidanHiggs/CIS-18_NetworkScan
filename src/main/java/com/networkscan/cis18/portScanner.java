@@ -11,7 +11,7 @@ public class portScanner {
     private Map<String, Service> portServicesMap = new HashMap<>();
 
     public portScanner() {
-        loadPortServices("src/main/resources/com/networkscan/cis18/ports.txt"); // Ensure this path is correct in your context
+        loadPortServices("src/main/resources/com/networkscan/cis18/ports.txt"); 
     }
 
     private void loadPortServices(String filename) {
@@ -31,12 +31,13 @@ public class portScanner {
     }
 
     public String scanIp(String host, int startPort, int endPort) {
+        loadPortServices("src/main/resources/com/networkscan/cis18/ports.txt");
         StringBuilder sb = new StringBuilder();
         for (int port = startPort; port <= endPort; port++) {
             try (Socket socket = new Socket(host, port)) {
                 socket.setSoTimeout(5000);
                 Service service = portServicesMap.getOrDefault(String.valueOf(port), new Service("Unknown", "Unknown"));
-                sb.append("Port ").append(port).append(" is open - ").append(service).append("\n");
+                sb.append("Port ").append(port).append(" is open - ").append(service.toString()).append("\n");
             } catch (IOException e) {
                 // Ignore exceptions for closed ports
             }
