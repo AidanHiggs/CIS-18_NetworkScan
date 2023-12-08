@@ -29,7 +29,7 @@ public class hostDisco {
     private boolean pingHost(String hostAddress) {
         String[] results = pingDecorator.getPingResults(hostAddress);
         for(String result : results) {
-             if (result.contains("64 bytes from")) {
+             if (result.contains("reply from")) {
                 return true;
             }else{return false;}
         }
