@@ -1,4 +1,12 @@
-# CIS-18_NetworkScan
+# CIS-18_NetworkScan This branch is now Depricated, forking to three new projects
+1. A fork continuing the java dev path - mainy a reference point 
+2. a fork porting the code to python - main dev branch, forking to python because java sourced some bad beans.
+3. a fork porting the code to rust - this one will be experiental and more of a way to learn rust, not a ful fork of the application, at least for a while.
+
+
+
+
+
 Development is underway!
 Program Overview
 Model-View-Controller (MVC) Pattern:
