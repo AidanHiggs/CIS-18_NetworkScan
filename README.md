@@ -1,6 +1,6 @@
-# CIS-18_NetworkScan This branch is now Depricated, forking to three new projects
+# CIS-18_NetworkScan This branch is now Depricated, forking to three new repos
 1. A fork continuing the java dev path - mainy a reference point 
-2. a fork porting the code to python - main dev branch, forking to python because java sourced some bad beans.
+2. a fork porting the code to python - main dev branch, forking to python because java sourced some bad beans, https://github.com/AidanHiggs/NetworkMultiTool_Python.git
 3. a fork porting the code to rust - this one will be experiental and more of a way to learn rust, not a ful fork of the application, at least for a while.
 
 Development is of this application framework for our College of The Redwoods CIS-18 class is complete(ish) great job team!
